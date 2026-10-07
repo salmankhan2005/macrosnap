@@ -911,16 +911,27 @@ def fetch_latest_telegram_chat() -> Tuple[Optional[str], Optional[str]]:
 
 
 def send_telegram_message(chat_id: str, text: str) -> Tuple[bool, str]:
-    """Send real-time auto-update or summary via Telegram Bot API."""
+    """Send real-time auto-update or summary via Telegram Bot API with auto-resolution."""
     token = get_telegram_bot_token()
     if not token:
         return False, "TELEGRAM_BOT_TOKEN not configured in secrets.toml"
-    if not chat_id:
-        return False, "No Telegram Chat ID provided"
+
+    target_chat = str(chat_id).strip() if chat_id else ""
+    # If empty or entered as a phone number (e.g. 10 digits or starts with +), resolve real Telegram user chat ID
+    if not target_chat or target_chat.startswith("+") or (len(target_chat) == 10 and target_chat.isdigit()):
+        latest_id, _ = fetch_latest_telegram_chat()
+        if latest_id:
+            target_chat = latest_id
+            if "telegram_chat_id" in st.session_state:
+                st.session_state["telegram_chat_id"] = latest_id
+
+    if not target_chat:
+        return False, "No Telegram Chat ID found. Please send /start to @MacrosnapBbot first!"
+
     try:
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         payload = {
-            "chat_id": str(chat_id).strip(),
+            "chat_id": target_chat,
             "text": text,
             "parse_mode": "Markdown"
         }
@@ -928,8 +939,19 @@ def send_telegram_message(chat_id: str, text: str) -> Tuple[bool, str]:
         data = res.json()
         if data.get("ok"):
             return True, "Telegram message sent successfully!"
-        else:
-            return False, data.get("description", "Failed to send Telegram message")
+
+        # Fallback: if chat not found, auto-detect latest chat ID from getUpdates
+        latest_id, _ = fetch_latest_telegram_chat()
+        if latest_id and latest_id != target_chat:
+            payload["chat_id"] = latest_id
+            retry_res = requests.post(url, json=payload, timeout=8)
+            retry_data = retry_res.json()
+            if retry_data.get("ok"):
+                if "telegram_chat_id" in st.session_state:
+                    st.session_state["telegram_chat_id"] = latest_id
+                return True, "Telegram message sent successfully!"
+
+        return False, data.get("description", "Failed to send Telegram message")
     except Exception as e:
         return False, str(e)
 
