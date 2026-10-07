@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MacroSnap - Web Chat &amp; Nutrition Dashboard</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface": "#1a1d16",
+            "primary-container": "#5b7c66",
+            "surface-container-high": "#e7e9de",
+            "inverse-on-surface": "#f0f2e7",
+            "secondary-container": "#c3e9cc",
+            "on-secondary-fixed": "#002110",
+            "on-secondary": "#ffffff",
+            "background": "#f9faef",
+            "tertiary-fixed": "#e9e2d4",
+            "surface-container-highest": "#e2e3d9",
+            "primary": "#43634f",
+            "on-surface-variant": "#424843",
+            "surface-container": "#edefe4",
+            "on-background": "#1a1d16",
+            "surface-tint": "#456551",
+            "on-secondary-container": "#486a53",
+            "tertiary-fixed-dim": "#cdc6b8",
+            "on-tertiary": "#ffffff",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed-variant": "#2d4e38",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#accfb6",
+            "error": "#ba1a1a",
+            "secondary-fixed-dim": "#aacfb4",
+            "surface": "#f9faef",
+            "primary-fixed-dim": "#accfb6",
+            "on-tertiary-container": "#fffbff",
+            "outline-variant": "#c2c8c1",
+            "primary-fixed": "#c7ebd1",
+            "tertiary-container": "#797469",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f3f5e9",
+            "surface-dim": "#d9dbd0",
+            "surface-bright": "#f9faef",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#012111",
+            "on-tertiary-fixed": "#1e1b13",
+            "surface-variant": "#e2e3d9",
+            "on-primary-container": "#f6fff5",
+            "on-primary-fixed-variant": "#2e4d3a",
+            "inverse-surface": "#2e312a",
+            "on-tertiary-fixed-variant": "#4b463c",
+            "outline": "#727972",
+            "tertiary": "#605b51",
+            "secondary": "#44664f",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#c6eccf"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-lg": ["3.5rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-lg-mobile": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f9faef;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c2c8c1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-full flex flex-col antialiased selection:bg-secondary-container selection:text-on-secondary-fixed">
+<!-- TOPNAVBAR (Shared Component Implementation) -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant shadow-sm docked full-width top-0 z-50 sticky">
+<div class="w-full max-w-[1200px] mx-auto px-gutter flex items-center justify-between h-16">
+<!-- Brand & Badges -->
+<div class="flex items-center gap-space-md">
+<a class="text-headline-sm font-headline-sm text-primary flex items-center gap-space-xs tracking-tight" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span>MacroSnap</span>
+</a>
+<span class="hidden lg:inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase">
+          YOUR AI NUTRITION BUDDY
+        </span>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="border-b-2 border-primary text-primary pb-1 font-label-md text-label-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors duration-200" href="#">Meal Journal</a>
+<a class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors duration-200" href="#">Macro Insights</a>
+<a class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors duration-200" href="#">Snap &amp; Log</a>
+</nav>
+<!-- Trailing Controls & User Sync Area -->
+<div class="flex items-center gap-space-md">
+<!-- WhatsApp Sync Indicator -->
+<div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="font-medium">+1 •••• 2834</span>
+</div>
+<!-- WhatsApp Export CTA Button -->
+<button class="bg-primary hover:bg-primary-container text-on-primary transition-all duration-150 active:scale-95 px-3.5 py-2 rounded-lg font-label-md text-label-md flex items-center gap-1.5 shadow-sm" id="whatsapp-sync-btn">
+<span class="material-symbols-outlined text-[18px]">send_to_mobile</span>
+<span class="hidden sm:inline">📲 Send Summary to WhatsApp</span>
+<span class="sm:hidden">Send</span>
+</button>
+<!-- User Greeting and Avatar -->
+<div class="flex items-center gap-space-sm pl-2 border-l border-outline-variant">
+<span class="hidden xl:inline text-on-surface font-label-md text-label-md">Hi, Salman 👋</span>
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-md text-label-md font-bold ring-2 ring-primary/20 cursor-pointer" title="User profile avatar badge">
+            S
+          </div>
+</div>
+</div>
+</div>
+</header>
+<!-- NOTIFICATION BANNER -->
+<div class="bg-secondary-fixed text-on-secondary-fixed-variant px-gutter py-2.5 transition-all duration-300" id="status-banner">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-medium">Daily summary sent to your WhatsApp (+1 •••• 2834)!</span>
+</div>
+<button aria-label="Close notification" class="text-on-secondary-fixed-variant hover:text-on-surface p-1 rounded-full hover:bg-secondary-container/60 transition-colors" onclick="document.getElementById('status-banner').remove()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- MAIN VIEWPORT CONTAINER (1200px Max, Two-column desktop dashboard) -->
+<main class="flex-1 w-full max-w-[1200px] mx-auto px-gutter py-space-lg flex flex-col md:flex-row gap-space-lg items-start">
+<!-- LEFT COLUMN: Chat Area (approx 58% width) -->
+<section class="w-full md:w-[58%] flex flex-col h-[740px] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<!-- Chat Header Context -->
+<div class="px-space-lg py-3.5 border-b border-outline-variant flex items-center justify-between bg-surface-container-low/60 backdrop-blur-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
+<div>
+<h2 class="text-title-md font-title-md text-on-surface leading-tight">MacroSnap Nutrition Assistant</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Connected with Salman’s Food Cam &amp; WhatsApp</p>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm bg-surface-container-high px-2.5 py-1 rounded">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+<span>Fast AI Engine</span>
+</div>
+</div>
+<!-- Chat Feed Content -->
+<div class="flex-1 p-space-lg overflow-y-auto space-y-space-lg custom-scrollbar" id="chat-messages">
+<!-- Welcome Message from AI -->
+<div class="flex items-start gap-3 max-w-[88%]">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div class="space-y-1">
+<div class="bg-surface-container-low text-on-surface p-space-md rounded-2xl rounded-tl-sm border border-outline-variant/60 leading-relaxed font-body-md text-body-md">
+              Hey Salman! 🥗 Welcome to MacroSnap. Send a photo of your meal or describe what you're eating. I'll estimate its calories, protein, carbs, and fat. Ready to decode your next meal?
+            </div>
+<span class="text-label-sm font-label-sm text-on-surface-variant pl-1">12:30 PM · AI Engine</span>
+</div>
+</div>
+<!-- User Message with Uploaded Meal Photo -->
+<div class="flex items-start justify-end gap-3 max-w-[90%] ml-auto">
+<div class="space-y-1 text-right">
+<div class="bg-primary text-on-primary p-space-md rounded-2xl rounded-tr-sm shadow-sm inline-block text-left overflow-hidden max-w-full">
+<!-- Uploaded Food Photo Container -->
+<div class="mb-3 rounded-lg overflow-hidden border border-white/20 bg-black/10">
+<img alt="Grilled chicken salad with avocado" class="w-full h-48 object-cover rounded-md block" data-alt="A beautifully composed, high-resolution top-down photo of a gourmet grilled chicken salad served in a warm ceramic bowl. Features seared chicken breast strips with grill marks, creamy sliced Hass avocado, glossy halved red cherry tomatoes, tender baby spinach, and crisp mixed greens drizzled with light olive oil vinaigrette. Soft natural daylight illuminates the vibrant textures with an editorial wellness food photography aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd4XcdAs2RrtoeTrWUpPUWEPqFhuRdtMok5ws8vt6_XY1qRFoFnRsZ4m-9MQKrg264tJwa4ZGf86A-C3aLxHUVpzOU3RlhC45GjZwPwrpSzAy1SrHklBnaZDRQFBszmBeME7yubOVntSyCq-SshcfjKIqOeVc-hnGODrYh7ROCwIdga8s5lLt4wXBHmCKMnKeZTJsFELFtD7XazORT35Su27hX2VRfq8xym56sGWkj"/>
+</div>
+<p class="font-body-md text-body-md text-on-primary font-normal leading-relaxed">
+                Had this for lunch: grilled chicken salad with avocado, cherry tomatoes, and light vinaigrette dressing.
+              </p>
+</div>
+<div class="flex items-center justify-end gap-1 text-label-sm font-label-sm text-on-surface-variant pr-1">
+<span>12:34 PM</span>
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-0.5 font-label-sm font-bold">
+            S
+          </div>
+</div>
+<!-- AI Analysis Response -->
+<div class="flex items-start gap-3 max-w-[88%]">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div class="space-y-1">
+<div class="bg-surface-container-low text-on-surface p-space-md rounded-2xl rounded-tl-sm border border-outline-variant/60 space-y-2">
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span>Meal Recognized &amp; Logged</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                I've broken down your <strong>Grilled Herb Chicken &amp; Avocado Bowl</strong>. The macro composition shows high protein density and clean fats. Check the breakdown card on the right for your real-time metrics!
+              </p>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant pl-1">12:35 PM · MacroSnap Vision</span>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Message Input Bar -->
+<div class="p-space-md bg-surface-container-lowest border-t border-outline-variant">
+<form class="flex items-center gap-2 bg-surface rounded-xl p-1.5 border border-outline-variant focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all" onsubmit="event.preventDefault();">
+<button class="p-2 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container transition-colors" title="Snap or attach food photo" type="button">
+<span class="material-symbols-outlined text-[22px]">photo_camera</span>
+</button>
+<input class="flex-1 bg-transparent border-0 text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md focus:ring-0 focus:outline-none px-2 py-1" placeholder="Ask about your meal or upload a photo…" type="text"/>
+<button class="bg-primary hover:bg-primary-container text-on-primary w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-150 active:scale-95 shadow-sm" title="Send message" type="submit">
+<span class="material-symbols-outlined text-[20px]">arrow_upward</span>
+</button>
+</form>
+<div class="flex items-center justify-between mt-2 px-1 text-label-sm font-label-sm text-on-surface-variant">
+<span>AI multi-modal intake enabled</span>
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            Syncs instantly to WhatsApp
+          </span>
+</div>
+</div>
+</section>
+<!-- RIGHT COLUMN: Live Meal & Macro Breakdown Panel (approx 42% width) -->
+<aside class="w-full md:w-[42%] sticky top-20 space-y-space-md">
+<!-- Primary Meal Breakdown Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-space-lg space-y-space-md">
+<!-- Header & AI Confidence -->
+<div class="flex items-start justify-between gap-space-sm border-b border-outline-variant/70 pb-3">
+<div>
+<div class="flex items-center gap-1.5 text-primary font-label-sm text-label-sm mb-1">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span>AI Estimate (98% match)</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold tracking-tight">
+              Grilled Herb Chicken &amp; Avocado Bowl
+            </h3>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Analyzed Today at 12:35 PM</span>
+</div>
+<!-- Calorie Badge -->
+<div class="shrink-0 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1.5 rounded-full flex items-center gap-1 shadow-xs border border-outline-variant/40">
+<span class="text-[14px]">🔥</span>
+<span class="font-bold text-label-md font-label-md">450 kcal</span>
+</div>
+</div>
+<!-- 3-Column Macro Grid -->
+<div class="grid grid-cols-3 gap-2 text-center">
+<!-- Protein -->
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/60 flex flex-col items-center">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Protein</span>
+<span class="text-headline-sm font-headline-sm text-primary font-bold my-0.5">38g</span>
+<span class="inline-block px-1.5 py-0.5 bg-secondary-container text-on-secondary-fixed text-[10px] font-bold rounded">
+              Lean
+            </span>
+</div>
+<!-- Carbs -->
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/60 flex flex-col items-center">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Carbs</span>
+<span class="text-headline-sm font-headline-sm text-primary-container font-bold my-0.5">18g</span>
+<span class="inline-block px-1.5 py-0.5 bg-surface-container-high text-on-surface-variant text-[10px] font-bold rounded">
+              Complex
+            </span>
+</div>
+<!-- Fats -->
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/60 flex flex-col items-center">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Healthy Fats</span>
+<span class="text-headline-sm font-headline-sm text-tertiary font-bold my-0.5">24g</span>
+<span class="inline-block px-1.5 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded">
+              Omega-9
+            </span>
+</div>
+</div>
+<!-- Visual Macro Progress Bar -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>Macro Caloric Ratio</span>
+<span class="font-semibold text-on-surface">34% P · 16% C · 50% F</span>
+</div>
+<!-- Segmented Bar -->
+<div class="w-full h-3 rounded-full bg-surface-container-high overflow-hidden flex p-0.5 gap-0.5">
+<div class="bg-primary h-full rounded-l-full" style="width: 34%;" title="Protein 34%"></div>
+<div class="bg-primary-container h-full" style="width: 16%;" title="Carbohydrates 16%"></div>
+<div class="bg-tertiary-fixed-dim h-full rounded-r-full" style="width: 50%;" title="Fats 50%"></div>
+</div>
+<!-- Legend -->
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant px-0.5 pt-0.5">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span>Protein</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container inline-block"></span>
+<span>Carbs</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim inline-block"></span>
+<span>Healthy Fat</span>
+</div>
+</div>
+</div>
+<!-- Nutrition Insight Callout -->
+<div class="p-space-md rounded-lg bg-surface-container-low border-l-4 border-primary text-body-sm font-body-sm space-y-1">
+<div class="flex items-center gap-1.5 font-semibold text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Nutrition Insight</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed">
+            Rich in lean poultry protein and heart-healthy monounsaturated fats from fresh avocado. Low glycemic load promotes steady post-lunch energy.
+          </p>
+</div>
+<!-- Disclaimer -->
+<div class="flex items-start gap-1.5 text-label-sm font-label-sm text-on-surface-variant/80 italic">
+<span class="material-symbols-outlined text-[15px] shrink-0 not-italic mt-0.5">info</span>
+<span>Estimates vary with portion size, ingredients, and preparation.</span>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex flex-col sm:flex-row gap-2 pt-1 border-t border-outline-variant/60">
+<button class="flex-1 bg-primary hover:bg-primary-container text-on-primary py-2.5 px-3 rounded-lg font-label-md text-label-md transition-colors active:scale-95 flex items-center justify-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>Save to Daily Log</span>
+</button>
+<button class="flex-1 bg-surface-container hover:bg-surface-container-high text-on-surface py-2.5 px-3 rounded-lg font-label-md text-label-md transition-colors active:scale-95 flex items-center justify-center gap-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+<span>Ask follow-up question</span>
+</button>
+</div>
+</div>
+<!-- Compact Daily Target Progress Pill -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">pie_chart</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Daily Caloric Target</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant">1,480 / 2,100 kcal consumed (70%)</p>
+</div>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-primary px-2.5 py-1 bg-surface-container rounded-md">
+          On Track
+        </span>
+</div>
+</aside>
+</main>
+<!-- FOOTER (Shared Component Implementation) -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline mt-auto">
+<div class="w-full max-w-[1100px] mx-auto px-gutter py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-md">
+<!-- Logo & Copyright Notice -->
+<div class="flex flex-col md:flex-row items-center gap-2 md:gap-space-md text-center md:text-left">
+<span class="text-title-md font-title-md text-primary dark:text-inverse-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+          MacroSnap
+        </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant">
+          © 2024 MacroSnap. Your AI Nutrition Buddy. All rights reserved.
+        </span>
+</div>
+<!-- Footer Policy Links -->
+<nav class="flex flex-wrap justify-center items-center gap-space-lg">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">WhatsApp Bot Help</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-sm text-label-sm hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">Dietary Guidelines</a>
+</nav>
+</div>
+</footer>
+<script>
+    // Lightweight toast/feedback trigger for the WhatsApp Summary Button
+    const waBtn = document.getElementById('whatsapp-sync-btn');
+    if (waBtn) {
+      waBtn.addEventListener('click', () => {
+        const existingToast = document.getElementById('temp-toast');
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'temp-toast';
+        toast.className = 'fixed bottom-5 right-5 z-50 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 font-label-md text-label-md animate-bounce';
+        toast.innerHTML = '<span class="material-symbols-outlined text-secondary-fixed text-[20px]">check_circle</span> Instant sync triggered to +1 •••• 2834!';
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          if (toast) toast.remove();
+        }, 3500);
+      });
+    }
+  </script>
+</body></html>

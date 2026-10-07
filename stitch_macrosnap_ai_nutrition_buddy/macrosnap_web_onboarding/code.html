@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MacroSnap - Onboarding</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface": "#1a1d16",
+            "primary-container": "#5b7c66",
+            "surface-container-high": "#e7e9de",
+            "inverse-on-surface": "#f0f2e7",
+            "secondary-container": "#c3e9cc",
+            "on-secondary-fixed": "#002110",
+            "on-secondary": "#ffffff",
+            "background": "#f9faef",
+            "tertiary-fixed": "#e9e2d4",
+            "surface-container-highest": "#e2e3d9",
+            "primary": "#43634f",
+            "on-surface-variant": "#424843",
+            "surface-container": "#edefe4",
+            "on-background": "#1a1d16",
+            "surface-tint": "#456551",
+            "on-secondary-container": "#486a53",
+            "tertiary-fixed-dim": "#cdc6b8",
+            "on-tertiary": "#ffffff",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed-variant": "#2d4e38",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#accfb6",
+            "error": "#ba1a1a",
+            "secondary-fixed-dim": "#aacfb4",
+            "surface": "#f9faef",
+            "primary-fixed-dim": "#accfb6",
+            "on-tertiary-container": "#fffbff",
+            "outline-variant": "#c2c8c1",
+            "primary-fixed": "#c7ebd1",
+            "tertiary-container": "#797469",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f3f5e9",
+            "surface-dim": "#d9dbd0",
+            "surface-bright": "#f9faef",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#012111",
+            "on-tertiary-fixed": "#1e1b13",
+            "surface-variant": "#e2e3d9",
+            "on-primary-container": "#f6fff5",
+            "on-primary-fixed-variant": "#2e4d3a",
+            "inverse-surface": "#2e312a",
+            "on-tertiary-fixed-variant": "#4b463c",
+            "outline": "#727972",
+            "tertiary": "#605b51",
+            "secondary": "#44664f",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#c6eccf"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-lg": ["3.5rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-lg-mobile": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md text-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top Navigation Anchor (Shared Component: TopNavBar) -->
+<header class="w-full bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm sticky top-0 z-50">
+<div class="w-full max-w-[1100px] mx-auto px-gutter flex items-center justify-between h-16">
+<!-- Logo & Brand Badge -->
+<div class="flex items-center gap-space-md">
+<a class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary flex items-center gap-space-xs tracking-tight" href="#">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="eco" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span>MacroSnap</span>
+</a>
+<span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm tracking-wider uppercase">
+          YOUR AI NUTRITION BUDDY
+        </span>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center space-x-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface font-label-md text-label-md transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface font-label-md text-label-md transition-colors duration-200" href="#">Meal Journal</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface font-label-md text-label-md transition-colors duration-200" href="#">Macro Insights</a>
+<a class="border-b-2 border-primary text-primary dark:border-inverse-primary dark:text-inverse-primary pb-1 font-label-md text-label-md" href="#">Snap &amp; Log</a>
+</nav>
+<!-- Trailing Action Badges -->
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-1.5 px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant text-on-surface-variant text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="sync">sync</span>
+<span>WhatsApp Synced</span>
+</div>
+<div class="p-1 rounded-full text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md border border-outline-variant" title="User profile avatar badge">
+          S
+        </div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col justify-center items-center py-12 px-gutter">
+<div class="w-full max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Left Column: Editorial Value Proposition -->
+<div class="lg:col-span-5 flex flex-col space-y-space-lg text-left">
+<div class="inline-flex items-center gap-2 self-start px-3 py-1 bg-secondary-container/60 rounded-full text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="sparkles" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+<span>Effortless Nutrition Logging</span>
+</div>
+<div class="space-y-space-sm">
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight leading-tight">
+            Eat better. <br/><span class="text-primary italic font-serif">Understand</span> every bite.
+          </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">
+            Your personal AI nutrition buddy, ready to decode your meals.
+          </p>
+</div>
+<!-- WhatsApp Meal Preview Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm space-y-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
+<span class="text-label-sm font-label-sm text-on-surface">WhatsApp Companion</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Just now</span>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, vibrant top-down food photograph of an avocado salmon grain bowl arranged in a matte ceramic bowl on a rustic bleached oak table, illuminated with natural morning sunlight casting gentle organic shadows. The overall tone is grounded in soft sage greens, linen whites, and natural culinary warmth, aligned with an upscale editorial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATqQEhp8_QzzF5fGvglHsSzIOLEODq8KWRTA2zDb-EAqlxHvRNwaKfYa9MTIA97n6JLdjxTGEVoDmE2cqjglGbkNceKgIPL_VK8265HvsmcVoVRcW8SbKxN3VaDIYJn5PLS4_oT42wFg3zNfLRhPLNELSrIXQJ81WoEzD9g2gVANYI1_WVab8768joe0g5lUO2ghPBvYhuaRwxt8ZG_r-19qUwSjyrTSLGTHC1XKKh"/>
+</div>
+<div class="flex-1 space-y-1">
+<p class="text-label-md font-label-md text-on-surface">Avocado Salmon Grain Bowl</p>
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-semibold">540 kcal</span>
+<span class="text-on-surface-variant">36g P • 42g C • 22g F</span>
+</div>
+</div>
+</div>
+<!-- Micro Macro Bar -->
+<div class="space-y-1 pt-1">
+<div class="w-full h-1.5 bg-surface-container rounded-full flex overflow-hidden">
+<div class="h-full bg-primary" style="width: 35%"></div>
+<div class="h-full bg-primary-container" style="width: 40%"></div>
+<div class="h-full bg-tertiary-fixed-dim" style="width: 25%"></div>
+</div>
+<div class="flex justify-between text-[11px] text-outline">
+<span>Protein (35%)</span>
+<span>Carbs (40%)</span>
+<span>Healthy Fats (25%)</span>
+</div>
+</div>
+</div>
+<!-- Trust Badges List -->
+<div class="pt-2 flex flex-wrap gap-y-2 gap-x-4 text-label-sm font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>No app download required</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Cancel anytime</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>Powered by Gemini AI</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Focused Onboarding Card (Constrained max-w-xl) -->
+<div class="lg:col-span-7 flex justify-center">
+<div class="w-full max-w-xl bg-surface-container-lowest border border-outline-variant rounded-xl p-space-xl shadow-sm space-y-space-lg">
+<!-- Card Header & Value Pills -->
+<div class="space-y-space-md">
+<div class="space-y-1">
+<h2 class="text-headline-md font-headline-md text-on-surface">Start your daily snap habit</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Connect your WhatsApp in 30 seconds. No passwords or app stores.</p>
+</div>
+<!-- Feature Pills Highlight -->
+<div class="flex flex-wrap gap-2 pt-1">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low text-primary text-label-sm font-label-sm border border-outline-variant/60">
+<span class="material-symbols-outlined text-[15px]" data-icon="photo_camera">photo_camera</span>
+                Snap meal in WhatsApp
+              </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low text-primary text-label-sm font-label-sm border border-outline-variant/60">
+<span class="material-symbols-outlined text-[15px]" data-icon="bolt">bolt</span>
+                Instant macro breakdown
+              </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low text-primary text-label-sm font-label-sm border border-outline-variant/60">
+<span class="material-symbols-outlined text-[15px]" data-icon="pie_chart">pie_chart</span>
+                Daily AI summary
+              </span>
+</div>
+</div>
+<!-- Interactive Form Elements -->
+<form class="space-y-space-md" onsubmit="event.preventDefault();">
+<!-- Name Input Field -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface" for="userName">
+                What should we call you?
+              </label>
+<div class="relative">
+<input class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface placeholder:text-outline text-body-md font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="userName" name="userName" placeholder="e.g. Salman" type="text"/>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+</div>
+</div>
+</div>
+<!-- WhatsApp Number Input Group -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface" for="phoneInput">
+                WhatsApp Phone Number
+              </label>
+<div class="flex rounded-lg border border-outline-variant focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all overflow-hidden bg-surface-container-lowest">
+<!-- Country Code Selector -->
+<div class="relative bg-surface-container-low border-r border-outline-variant flex items-center px-3">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="call">call</span>
+<span>+1 (US)</span>
+</span>
+<select aria-label="Select Country Code" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+<option value="+1">+1 (United States)</option>
+<option value="+44">+44 (United Kingdom)</option>
+<option value="+1">+1 (Canada)</option>
+<option value="+61">+61 (Australia)</option>
+<option value="+49">+49 (Germany)</option>
+<option value="+91">+91 (India)</option>
+</select>
+</div>
+<!-- Number Input -->
+<input class="flex-1 px-4 py-2.5 border-0 bg-transparent text-on-surface placeholder:text-outline text-body-md font-body-md focus:ring-0 outline-none" id="phoneInput" name="phoneInput" placeholder="+1 (555) 019-2834" type="tel" value="+1 (555) 019-2834"/>
+</div>
+<!-- Reassurance Notice -->
+<p class="text-body-sm font-body-sm text-outline flex items-start gap-1.5 pt-0.5">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5 flex-shrink-0" data-icon="info">info</span>
+<span>Used solely to send your daily meal &amp; macro summaries upon request.</span>
+</p>
+</div>
+<!-- Action Button -->
+<div class="pt-2">
+<button class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:scale-95" type="submit">
+<span>Let's get started</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Privacy Guarantee Note -->
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<p class="text-[13px] leading-relaxed text-on-surface-variant font-body-sm">
+                Your data is private &amp; encrypted. We only message you when requested.
+              </p>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component (Shared Component: Footer) -->
+<footer class="w-full bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline">
+<div class="w-full max-w-[1100px] mx-auto px-gutter py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-md">
+<!-- Copyright & Brand Assertion -->
+<div class="flex flex-col sm:flex-row items-center gap-space-sm text-center md:text-left">
+<span class="text-title-md font-title-md text-primary dark:text-inverse-primary flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-[20px]" data-icon="eco" style="font-variation-settings: 'FILL' 1;">eco</span>
+          MacroSnap
+        </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant">
+          © 2024 MacroSnap. Your AI Nutrition Buddy. All rights reserved.
+        </span>
+</div>
+<!-- Links -->
+<div class="flex flex-wrap items-center justify-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary font-label-sm text-label-sm transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary font-label-sm text-label-sm transition-colors duration-150" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary font-label-sm text-label-sm transition-colors duration-150" href="#">WhatsApp Bot Help</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary font-label-sm text-label-sm transition-colors duration-150" href="#">Dietary Guidelines</a>
+</div>
+</div>
+</footer>
+</body></html>

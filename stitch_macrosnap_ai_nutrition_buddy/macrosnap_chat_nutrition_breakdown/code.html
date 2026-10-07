@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MacroSnap — AI Nutrition Buddy</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#ffffff",
+            "primary-fixed": "#c7ebd1",
+            "secondary": "#44664f",
+            "on-secondary-container": "#486a53",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#f6fff5",
+            "on-error-container": "#93000a",
+            "on-primary-fixed-variant": "#2e4d3a",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f0f2e7",
+            "secondary-fixed": "#c6eccf",
+            "on-tertiary-fixed-variant": "#4b463c",
+            "inverse-primary": "#accfb6",
+            "on-background": "#1a1d16",
+            "surface-container": "#edefe4",
+            "surface-dim": "#d9dbd0",
+            "on-tertiary-fixed": "#1e1b13",
+            "primary": "#43634f",
+            "surface-container-low": "#f3f5e9",
+            "surface-container-highest": "#e2e3d9",
+            "tertiary-fixed": "#e9e2d4",
+            "surface-variant": "#e2e3d9",
+            "on-secondary-fixed": "#002110",
+            "error-container": "#ffdad6",
+            "error": "#ba1a1a",
+            "surface-container-high": "#e7e9de",
+            "on-secondary-fixed-variant": "#2d4e38",
+            "tertiary-container": "#797469",
+            "surface-tint": "#456551",
+            "tertiary": "#605b51",
+            "tertiary-fixed-dim": "#cdc6b8",
+            "inverse-surface": "#2e312a",
+            "on-surface-variant": "#424843",
+            "secondary-container": "#c3e9cc",
+            "outline": "#727972",
+            "on-tertiary-container": "#fffbff",
+            "surface-bright": "#f9faef",
+            "on-primary-fixed": "#012111",
+            "on-surface": "#1a1d16",
+            "secondary-fixed-dim": "#aacfb4",
+            "surface": "#f9faef",
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#c2c8c1",
+            "background": "#f9faef",
+            "primary-container": "#5b7c66",
+            "primary-fixed-dim": "#accfb6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "space-xl": "2rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "display-lg": ["3.5rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "display-lg-mobile": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" }],
+            "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top App Navigation Anchor (from Shared Components JSON: TopAppBar) -->
+<header class="sticky top-0 z-40 bg-surface shadow-sm transition-colors duration-200">
+<div class="flex justify-between items-center w-full px-4 py-3 max-w-screen-md mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="eco">eco</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">MacroSnap</span>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-label-sm px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">YOUR AI NUTRITION BUDDY</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hi, Salman 👋</span>
+</div>
+</div>
+<!-- Prominent WhatsApp Action Button -->
+<button class="flex items-center gap-1.5 bg-surface-container-lowest text-primary hover:bg-surface-container-low transition-colors duration-200 active:scale-95 px-3 py-1.5 rounded-full shadow-sm text-label-sm font-label-sm border border-outline-variant" id="whatsapp-btn">
+<span class="material-symbols-outlined text-base text-primary" data-icon="chat">chat</span>
+<span class="hidden sm:inline">Send summary to WhatsApp</span>
+<span class="sm:hidden">Sync</span>
+</button>
+</div>
+</header>
+<!-- WhatsApp Confirmation Toast / Banner -->
+<div class="max-w-screen-md mx-auto w-full px-4 pt-3 transition-all duration-300" id="toast-banner">
+<div class="flex items-center justify-between bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+<span class="font-label-md text-label-md">Daily summary sent to your WhatsApp (+1 •••• 2834)!</span>
+</div>
+<button class="text-on-secondary-container hover:opacity-75 transition-opacity" onclick="document.getElementById('toast-banner').style.display='none'">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+</div>
+<!-- Primary Chat Conversation Canvas -->
+<main class="flex-1 w-full max-w-screen-md mx-auto px-4 py-4 space-y-5 pb-36">
+<!-- Message 1: AI Welcome Card -->
+<div class="flex items-start gap-3 max-w-xl">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-sm mt-1">
+<span class="material-symbols-outlined text-lg" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-semibold">MacroSnap AI</span>
+<span class="font-label-sm text-label-sm text-outline">12:30 PM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface whitespace-pre-line">Hey Salman! 🥗 Welcome to MacroSnap.
+Send a photo of your meal or describe what you're eating. I'll estimate its calories, protein, carbs, and fat.
+Ready to decode your next meal?</p>
+</div>
+</div>
+<!-- Message 2: User Message with Photo -->
+<div class="flex items-start justify-end gap-3 max-w-xl ml-auto">
+<div class="bg-primary text-on-primary p-3 rounded-xl shadow-sm space-y-2 max-w-md">
+<!-- Photo Preview -->
+<div class="overflow-hidden rounded-lg relative aspect-video w-full bg-surface-container-highest">
+<img class="w-full h-full object-cover rounded-lg" data-alt="A top-down aesthetic food photograph of a fresh gourmet Mediterranean grilled chicken salad bowl in a rustic ceramic plate on a warm linen tablecloth with sliced ripe avocado, charred herb chicken breast strips, split cherry tomatoes, tender arugula leaves, and a delicate gloss of extra virgin olive oil vinaigrette under diffused natural daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnK7ppvGySmvdP0rlGdpArs3b3ZWM00CMMy145RC0CzNJ659cWMVvb_knxOvfCpsU9Am8sTnre0_FRLyzT4HptEFcRLaqLC9or_XRo6sXjiA9i_SvFibDPXxGcsY4JZNT_SiboS06rs9e-fya81KsCivpp7Ny8ECjCtG62UlhvsKvkSvum1BMB-IyL_iZr6QlMNj_M2Plg_fO3mCdkepMgo-LzXGufyMlh5AoAP5Nw"/>
+</div>
+<p class="font-body-md text-body-md text-on-primary">Had this for lunch: grilled chicken salad with avocado, cherry tomatoes, and light vinaigrette dressing.</p>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-primary-fixed-dim">12:34 PM · Sent</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0 shadow-sm mt-1">
+<span class="material-symbols-outlined text-lg" data-icon="person">person</span>
+</div>
+</div>
+<!-- Message 3: AI Detailed Nutrition Response with Macro Cards -->
+<div class="flex items-start gap-3 max-w-xl">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-sm mt-1">
+<span class="material-symbols-outlined text-lg" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-sm border border-outline-variant space-y-4 w-full">
+<!-- AI Card Header -->
+<div class="flex flex-wrap items-center justify-between gap-2 border-b border-surface-container-highest pb-3">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-title-md text-title-md text-on-surface font-semibold">Grilled Herb Chicken &amp; Avocado Bowl</h2>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="bg-surface-container-low text-primary px-2 py-0.5 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="auto_awesome">auto_awesome</span>
+                AI Estimate
+              </span>
+<span class="font-label-sm text-label-sm text-outline">12:35 PM</span>
+</div>
+</div>
+<!-- Hero Calories Pill -->
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-headline-sm text-headline-sm font-bold">450</span>
+<span class="font-label-sm text-label-sm">kcal</span>
+</div>
+</div>
+<!-- 3-Column Macro Bento Cards -->
+<div class="grid grid-cols-3 gap-2 sm:gap-3">
+<!-- Protein Card -->
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Protein</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold my-1">38g</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-label-sm font-semibold">Lean</span>
+</div>
+<!-- Carbs Card -->
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Carbs</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-bold my-1">18g</span>
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full text-[10px] font-label-sm font-semibold">Complex</span>
+</div>
+<!-- Healthy Fats Card -->
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Healthy Fats</span>
+<span class="font-headline-sm text-headline-sm text-tertiary font-bold my-1">24g</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded-full text-[10px] font-label-sm font-semibold">Omega-9</span>
+</div>
+</div>
+<!-- Macro Segment Progress Bar -->
+<div class="space-y-1.5">
+<div class="flex justify-between text-xs font-label-sm text-on-surface-variant">
+<span>Macro Breakdown</span>
+<span>34% P · 16% C · 50% F</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="bg-primary h-full rounded-l-full" style="width: 34%"></div>
+<div class="bg-primary-container h-full" style="width: 16%"></div>
+<div class="bg-tertiary-fixed-dim h-full rounded-r-full" style="width: 50%"></div>
+</div>
+</div>
+<!-- Nutrition Breakdown Bullets -->
+<div class="bg-surface-container-lowest rounded-lg p-3 border border-surface-container-highest">
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5" data-icon="check_circle">check_circle</span>
+<span>Rich in lean poultry protein and heart-healthy monounsaturated fats from fresh avocado. Low glycemic load.</span>
+</p>
+</div>
+<!-- Disclaimer Footer -->
+<div class="flex items-center gap-1.5 pt-1 text-outline">
+<span class="material-symbols-outlined text-xs" data-icon="info">info</span>
+<p class="font-label-sm text-label-sm">Estimates vary with portion size, ingredients, and preparation.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Controls: Chat Input & Global Nav -->
+<div class="fixed bottom-0 left-0 w-full z-50 bg-surface/95 backdrop-blur-md shadow-md">
+<!-- Floating Chat & Photo Input Bar -->
+<div class="max-w-screen-md mx-auto px-4 py-2">
+<form class="flex items-center gap-2 bg-surface-container-lowest p-1.5 pl-3 rounded-full border border-outline-variant shadow-sm focus-within:border-primary transition-colors" onsubmit="event.preventDefault();">
+<!-- Attachment Button -->
+<button aria-label="Upload Meal Photo" class="text-primary hover:text-primary-container transition-colors p-1.5 rounded-full hover:bg-surface-container-low flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-2xl" data-icon="photo_camera">photo_camera</span>
+</button>
+<!-- Text Input -->
+<input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface placeholder:text-outline font-body-sm text-body-sm px-1 py-1" placeholder="Ask about your meal or upload a photo…" type="text"/>
+<!-- Sage Green Send Button -->
+<button aria-label="Send message" class="bg-primary hover:bg-secondary text-on-primary w-10 h-10 rounded-full flex items-center justify-center transition-all duration-150 active:scale-95 shadow-sm" type="submit">
+<span class="material-symbols-outlined text-xl" data-icon="arrow_upward">arrow_upward</span>
+</button>
+</form>
+</div>
+<!-- BottomNavBar (Shared Component from JSON: Active tab = Log Meal) -->
+<nav class="flex justify-around items-center px-4 py-2 bg-surface max-w-screen-md mx-auto">
+<!-- Tab 1: Today (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1.5 transition-all duration-200 hover:text-primary active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="today">today</span>
+<span class="font-label-sm text-label-sm mt-0.5">Today</span>
+</a>
+<!-- Tab 2: Log Meal (ACTIVE intent for Chat Dashboard) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-3 py-1.5 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="photo_camera">photo_camera</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-semibold">Log Meal</span>
+</a>
+<!-- Tab 3: Insights (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1.5 transition-all duration-200 hover:text-primary active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm text-label-sm mt-0.5">Insights</span>
+</a>
+<!-- Tab 4: Settings (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1.5 transition-all duration-200 hover:text-primary active:scale-95" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm mt-0.5">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Interactive script for WhatsApp trigger simulation -->
+<script>
+    document.getElementById('whatsapp-btn').addEventListener('click', () => {
+      const toast = document.getElementById('toast-banner');
+      toast.style.display = 'block';
+      toast.scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body></html>
