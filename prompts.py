@@ -51,19 +51,24 @@ def get_welcome_message(user_name: str) -> str:
         "Ready to decode your next meal?"
     )
 
-def get_whatsapp_summary_prompt(user_name: str, conversation_text: str) -> str:
-    """Prompt for generating a concise WhatsApp-friendly summary of the meals discussed."""
-    return f"""You are MacroSnap AI. Based on the following conversation with {user_name}, create a concise, beautifully formatted WhatsApp summary message.
+def get_telegram_summary_prompt(user_name: str, conversation_text: str) -> str:
+    """Prompt for generating a concise Telegram-friendly summary of the meals discussed."""
+    return f"""You are MacroSnap AI. Based on the following conversation with {user_name}, create a concise, beautifully formatted Telegram summary message.
 
 CONVERSATION LOG:
 {conversation_text}
 
-FORMATTING GUIDELINES FOR WHATSAPP:
-- Use WhatsApp markdown (*bold*, _italic_).
+FORMATTING GUIDELINES FOR TELEGRAM:
+- Use standard Telegram Markdown (*bold*, _italic_).
 - Start with a cheerful greeting: "🥗 *MacroSnap Nutrition Summary for {user_name}*"
 - List the specific meals analyzed during the session with their estimated calories and macros (P / C / F).
 - Provide the estimated daily totals (Total Calories, Total Protein, Carbs, Fat).
-- Add 1 brief, encouraging takeaway or tip for the day.
+- Add 1 brief, practical takeaway or healthy tip for the day.
 - End with: "_Note: Estimates vary with portion size, ingredients, and preparation._"
-- Keep the entire message under 1500 characters so it fits comfortably on mobile screens.
+- Keep the entire message clear and concise so it looks great in Telegram mobile & desktop.
 """
+
+def get_whatsapp_summary_prompt(user_name: str, conversation_text: str) -> str:
+    """Prompt for generating a concise summary of the meals discussed."""
+    return get_telegram_summary_prompt(user_name, conversation_text)
+

@@ -11,6 +11,7 @@ import base64
 import datetime
 import textwrap
 import urllib.parse
+import requests
 from io import BytesIO
 from typing import Optional, Dict, Any, Tuple
 
@@ -22,7 +23,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import system prompts and helpers
-from prompts import SYSTEM_PROMPT, get_welcome_message, get_whatsapp_summary_prompt
+from prompts import SYSTEM_PROMPT, get_welcome_message, get_telegram_summary_prompt, get_whatsapp_summary_prompt
 
 # -----------------------------------------------------------------------------
 # 1. STREAMLIT CONFIGURATION
@@ -875,12 +876,59 @@ def get_secret(key: str, default: Optional[str] = None) -> Optional[str]:
     return val.strip() if val else default
 
 
-def format_whatsapp_number(raw_number: str) -> str:
-    """Format phone number with country code into E.164 with WhatsApp scheme."""
-    digits = re.sub(r"[^\d+]", "", raw_number)
-    if digits.startswith("+"):
-        return f"whatsapp:{digits}"
-    return f"whatsapp:+{digits}"
+def get_telegram_bot_token() -> Optional[str]:
+    """Retrieve Telegram Bot Token from secrets or env."""
+    return get_secret("TELEGRAM_BOT_TOKEN")
+
+
+def get_telegram_bot_username() -> str:
+    """Retrieve username of Telegram bot."""
+    return "MacrosnapBbot"
+
+
+def fetch_latest_telegram_chat() -> Tuple[Optional[str], Optional[str]]:
+    """Poll Telegram getUpdates to detect latest user chat ID."""
+    token = get_telegram_bot_token()
+    if not token:
+        return None, None
+    try:
+        url = f"https://api.telegram.org/bot{token}/getUpdates"
+        res = requests.get(url, timeout=5)
+        data = res.json()
+        if data.get("ok") and data.get("result"):
+            for item in reversed(data["result"]):
+                msg = item.get("message") or item.get("edited_message")
+                if msg and "chat" in msg:
+                    chat_id = str(msg["chat"]["id"])
+                    chat_name = msg["chat"].get("first_name") or msg["chat"].get("username", "")
+                    return chat_id, chat_name
+    except Exception:
+        pass
+    return None, None
+
+
+def send_telegram_message(chat_id: str, text: str) -> Tuple[bool, str]:
+    """Send real-time auto-update or summary via Telegram Bot API."""
+    token = get_telegram_bot_token()
+    if not token:
+        return False, "TELEGRAM_BOT_TOKEN not configured in secrets.toml"
+    if not chat_id:
+        return False, "No Telegram Chat ID provided"
+    try:
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        payload = {
+            "chat_id": str(chat_id).strip(),
+            "text": text,
+            "parse_mode": "Markdown"
+        }
+        res = requests.post(url, json=payload, timeout=8)
+        data = res.json()
+        if data.get("ok"):
+            return True, "Telegram message sent successfully!"
+        else:
+            return False, data.get("description", "Failed to send Telegram message")
+    except Exception as e:
+        return False, str(e)
 
 
 @st.cache_resource(show_spinner=False)
@@ -896,11 +944,12 @@ def get_groq_client():
         return None
 
 
-def create_whatsapp_direct_link(phone_number: str, message_text: str) -> str:
-    """Generate a direct WhatsApp click-to-chat URL without Twilio API requirements."""
-    clean_digits = re.sub(r"[^\d]", "", phone_number)
-    encoded_text = urllib.parse.quote(message_text)
-    return f"https://api.whatsapp.com/send?phone={clean_digits}&text={encoded_text}"
+def format_whatsapp_number(raw_number: str) -> str:
+    """Format phone number with country code into E.164 with WhatsApp scheme."""
+    digits = re.sub(r"[^\d+]", "", raw_number)
+    if digits.startswith("+"):
+        return f"whatsapp:{digits}"
+    return f"whatsapp:+{digits}"
 
 
 # -----------------------------------------------------------------------------
@@ -946,53 +995,47 @@ def extract_nutrition_data(text: str) -> Tuple[Optional[Dict[str, Any]], str]:
 # -----------------------------------------------------------------------------
 # 5. UI COMPONENTS: HEADER & BENTO CARDS
 # -----------------------------------------------------------------------------
-def render_top_header(user_name: str, whatsapp_num: str):
-    """Renders the top navigation matching Stitch reference TopAppBar."""
-    masked_phone = whatsapp_num[-4:] if len(whatsapp_num) >= 4 else "2834"
+def render_top_header(user_name: str, telegram_chat_id: str):
+    """Renders the top navigation matching Stitch reference TopAppBar with Telegram integration."""
+    bot_username = get_telegram_bot_username()
 
-    col_brand, col_actions = st.columns([7, 3], vertical_alignment="center")
+    col_brand, col_actions = st.columns([6.8, 3.2], vertical_alignment="center")
 
     with col_brand:
-        st.markdown(
-            textwrap.dedent(f"""
+        st.html(
+            f"""
             <div class="brand-left-group">
                 <span class="material-symbols-outlined" style="color:var(--primary); font-size:24px;">eco</span>
                 <span class="brand-logo-text">MacroSnap</span>
-                <span class="brand-badge-pill">
-                    <span class="brand-badge-dot"></span>
-                    <span>AI Nutrition Buddy</span>
+                <span class="brand-badge-pill" style="background:#e3f2fd; color:#0277bd;">
+                    <span class="brand-badge-dot" style="background:#0288d1;"></span>
+                    <span>Telegram Bot Live</span>
                 </span>
             </div>
-            """).strip(),
-            unsafe_allow_html=True,
+            """
         )
 
     with col_actions:
         st.markdown('<div class="whatsapp-header-btn">', unsafe_allow_html=True)
-        if st.button("💬 Send WhatsApp Summary", key="top_sync_btn", use_container_width=True):
-            send_whatsapp_summary()
+        if st.button("✈️ Send Telegram Summary", key="top_tg_sync_btn", use_container_width=True):
+            send_telegram_summary()
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # Toast banner if summary status is active
-    if st.session_state.get("whatsapp_status"):
-        st_info = st.session_state["whatsapp_status"]
+    # Toast banner if telegram summary status is active
+    if st.session_state.get("telegram_status"):
+        st_info = st.session_state["telegram_status"]
         if st_info["type"] == "success":
-            wa_url = st_info.get("wa_url")
-            link_btn_html = f"""
-            <a href="{wa_url}" target="_blank" style="background:#25D366; color:#FFFFFF; padding:0.4rem 0.9rem; border-radius:20px; font-weight:700; font-size:0.82rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem; white-space:nowrap; box-shadow:0 2px 6px rgba(37,211,102,0.3);">
-                <span>📲 Open WhatsApp to Send</span>
-                <span class="material-symbols-outlined" style="font-size:16px;">open_in_new</span>
-            </a>
-            """ if wa_url else ""
-
             st.html(
                 f"""
-                <div class="whatsapp-toast" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.85rem 1.15rem;">
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span class="material-symbols-outlined" style="font-size:20px; color:var(--primary);">check_circle</span>
+                <div class="whatsapp-toast" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.85rem 1.15rem; background:#e1f5fe; border:1px solid #b3e5fc;">
+                    <div style="display:flex; align-items:center; gap:0.5rem; color:#01579b;">
+                        <span class="material-symbols-outlined" style="font-size:20px; color:#0288d1;">send</span>
                         <span>{st_info['message']}</span>
                     </div>
-                    {link_btn_html}
+                    <a href="https://t.me/{bot_username}" target="_blank" style="background:#29b6f6; color:#FFFFFF; padding:0.4rem 0.9rem; border-radius:20px; font-weight:700; font-size:0.82rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem; white-space:nowrap; box-shadow:0 2px 6px rgba(41,182,246,0.3);">
+                        <span>Open @{bot_username}</span>
+                        <span class="material-symbols-outlined" style="font-size:16px;">open_in_new</span>
+                    </a>
                 </div>
                 """
             )
@@ -1106,26 +1149,26 @@ def render_nutrition_bento_card(data: Dict[str, Any]):
     st.html(card_html)
 
 
-def send_whatsapp_summary():
-    """Compiles meals with Groq AI and generates a direct WhatsApp click-to-chat link."""
-    if st.session_state.get("is_sending_whatsapp", False):
+def send_telegram_summary():
+    """Compiles meals with Groq AI and dispatches summary directly to Telegram Bot."""
+    if st.session_state.get("is_sending_telegram", False):
         return
 
     user_name = st.session_state.get("user_name", "Friend")
-    raw_number = st.session_state.get("whatsapp_number", "")
+    chat_id = st.session_state.get("telegram_chat_id", "")
+    bot_name = get_telegram_bot_username()
 
     user_messages = [m for m in st.session_state.messages if m["role"] == "user"]
     if not user_messages:
-        st.session_state["whatsapp_status"] = {
+        st.session_state["telegram_status"] = {
             "type": "error",
-            "message": "No meals logged yet! Chat or send a photo first before generating a summary.",
-            "wa_url": None
+            "message": "No meals logged yet! Chat or send a photo first before generating a summary."
         }
         st.rerun()
 
-    st.session_state["is_sending_whatsapp"] = True
+    st.session_state["is_sending_telegram"] = True
 
-    with st.spinner("Preparing your nutrition summary with Groq AI..."):
+    with st.spinner("Compiling daily nutrition summary with Groq AI for Telegram..."):
         history_lines = []
         for msg in st.session_state.messages:
             role = "User" if msg["role"] == "user" else "MacroSnap"
@@ -1136,16 +1179,16 @@ def send_whatsapp_summary():
         summary_text = ""
         if groq_client:
             try:
-                prompt_content = get_whatsapp_summary_prompt(user_name, conversation_text)
+                prompt_content = get_telegram_summary_prompt(user_name, conversation_text)
                 res = groq_client.chat.completions.create(
                     model="openai/gpt-oss-120b",
                     messages=[{"role": "user", "content": prompt_content}],
                     temperature=0.3,
                 )
                 summary_text = res.choices[0].message.content.strip()
-            except Exception as e:
+            except Exception:
                 summary_text = (
-                    f"🥗 *MacroSnap Nutrition Summary for {user_name}*\n\n"
+                    f"🥗 *MacroSnap Nutrition Daily Summary for {user_name}*\n\n"
                     f"Great job tracking your nutrition today!\n"
                     f"• Total meals logged: {len(user_messages)}\n\n"
                     f"💡 *Healthy Tip*: Drink plenty of water and maintain balanced protein density!\n"
@@ -1153,25 +1196,38 @@ def send_whatsapp_summary():
                 )
         else:
             summary_text = (
-                f"🥗 *MacroSnap Nutrition Summary for {user_name}*\n\n"
+                f"🥗 *MacroSnap Nutrition Daily Summary for {user_name}*\n\n"
                 f"Great job logging your meals today!\n"
                 f"• Total meals tracked: {len(user_messages)}\n\n"
                 f"💡 *Healthy Tip*: Drink plenty of water and keep up the mindful eating!\n"
                 f"_Note: Estimates vary with portion size, ingredients, and preparation._"
             )
 
-        wa_url = create_whatsapp_direct_link(raw_number, summary_text)
-        masked_num = raw_number[-4:] if len(raw_number) >= 4 else raw_number
+        if chat_id:
+            ok, resp_msg = send_telegram_message(chat_id, summary_text)
+            if ok:
+                st.session_state["telegram_status"] = {
+                    "type": "success",
+                    "message": f"Daily nutrition summary sent to Telegram (@{bot_name})!"
+                }
+            else:
+                st.session_state["telegram_status"] = {
+                    "type": "error",
+                    "message": f"Telegram delivery note: {resp_msg}. (Make sure you messaged @{bot_name} first!)"
+                }
+        else:
+            st.session_state["telegram_status"] = {
+                "type": "success",
+                "message": f"Daily summary compiled! Open @{bot_name} on Telegram to view."
+            }
 
-        st.session_state["whatsapp_status"] = {
-            "type": "success",
-            "message": f"Daily nutrition summary generated for {user_name} (+1 •••• {masked_num})!",
-            "wa_url": wa_url,
-            "summary_text": summary_text
-        }
-
-    st.session_state["is_sending_whatsapp"] = False
+    st.session_state["is_sending_telegram"] = False
     st.rerun()
+
+
+def send_whatsapp_summary():
+    """Alias for backwards compatibility."""
+    send_telegram_summary()
 
 
 # -----------------------------------------------------------------------------
@@ -1201,25 +1257,25 @@ def render_onboarding_screen():
     col_hero, col_form = st.columns([1, 1.15], gap="large")
 
     with col_hero:
-        st.markdown(
-            textwrap.dedent("""
-            <div class="hero-pill-badge">
-                <span class="material-symbols-outlined" style="font-size:14px;">sparkles</span>
-                <span>Effortless meal understanding</span>
+        st.html(
+            """
+            <div class="hero-pill-badge" style="background:#e1f5fe; color:#0288d1;">
+                <span class="material-symbols-outlined" style="font-size:14px;">bolt</span>
+                <span>Real-Time Telegram Auto-Update Bot</span>
             </div>
             <h1 class="onboarding-hero-title">
-                Eat better.<br><em>Understand</em> every bite.
+                Eat better.<br><em>Auto-sync</em> every meal.
             </h1>
             <p class="onboarding-hero-subtitle">
-                Your personal AI nutrition buddy, ready to decode your meals.
+                Track meals in the app, and receive live instant nutrition updates on Telegram.
             </p>
             <div class="web-companion-preview">
                 <div class="preview-header-line">
-                    <span style="display:flex; align-items:center; gap:4px; font-weight:600; color:var(--primary);">
-                        <span class="material-symbols-outlined" style="font-size:14px;">chat</span>
-                        WhatsApp Companion
+                    <span style="display:flex; align-items:center; gap:4px; font-weight:600; color:#0288d1;">
+                        <span class="material-symbols-outlined" style="font-size:16px;">send</span>
+                        Telegram Bot: @MacrosnapBbot
                     </span>
-                    <span>Just now</span>
+                    <span style="color:#0288d1; font-weight:700;">Live</span>
                 </div>
                 <div class="preview-meal-row">
                     <div style="font-size:32px; background:var(--surface-container-low); width:48px; height:48px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
@@ -1241,31 +1297,46 @@ def render_onboarding_screen():
             <div class="trust-badges-row">
                 <div class="trust-badge-item">
                     <span class="material-symbols-outlined" style="color:var(--primary); font-size:18px;">check_circle</span>
-                    <span>No app download</span>
+                    <span>100% Free Telegram Bot</span>
                 </div>
                 <div class="trust-badge-item">
-                    <span class="material-symbols-outlined" style="color:var(--primary); font-size:18px;">check_circle</span>
-                    <span>Cancel anytime</span>
+                    <span class="material-symbols-outlined" style="color:var(--primary); font-size:18px;">bolt</span>
+                    <span>Instant Real-Time Auto-Updates</span>
                 </div>
                 <div class="trust-badge-item">
                     <span class="material-symbols-outlined" style="color:var(--primary); font-size:18px;">verified</span>
-                    <span>Powered by Gemini AI</span>
+                    <span>Powered by Groq 120B AI</span>
                 </div>
             </div>
-            """).strip(),
-            unsafe_allow_html=True,
+            """
         )
 
     with col_form:
+        bot_user = get_telegram_bot_username()
+
+        st.html(
+            f"""
+            <div style="background:#e1f5fe; border:1px solid #b3e5fc; border-radius:12px; padding:0.85rem 1rem; margin-bottom:1rem; font-size:0.85rem;">
+                <div style="font-weight:700; color:#01579b; margin-bottom:0.25rem; display:flex; align-items:center; gap:0.35rem;">
+                    <span class="material-symbols-outlined" style="font-size:18px; color:#0288d1;">info</span>
+                    <span>Connect your Telegram in 1 Step:</span>
+                </div>
+                <div style="color:#0277bd; line-height:1.4;">
+                    Open <a href="https://t.me/{bot_user}" target="_blank" style="font-weight:700; color:#0288d1; text-decoration:underline;">@{bot_user} on Telegram</a> and send <code>/start</code>. Then enter your Chat ID below or click Auto-Detect!
+                </div>
+            </div>
+            """
+        )
+
         with st.form("onboarding_form", clear_on_submit=False):
             st.markdown(
                 textwrap.dedent("""
                 <h2 class="form-header-title">Start your daily snap habit</h2>
-                <p class="form-header-subtitle">Connect your WhatsApp in 30 seconds. No passwords or app stores.</p>
+                <p class="form-header-subtitle">Auto-update meals straight to your Telegram bot. No passwords needed.</p>
                 <div class="feature-pills-grid">
                     <div class="feature-pill-item">
-                        <span class="material-symbols-outlined" style="color:var(--primary); font-size:18px;">photo_camera</span>
-                        <span>Snap in WhatsApp</span>
+                        <span class="material-symbols-outlined" style="color:#0288d1; font-size:18px;">send</span>
+                        <span>Auto-Update Bot</span>
                     </div>
                     <div class="feature-pill-item">
                         <span class="material-symbols-outlined" style="color:var(--primary); font-size:18px;">bolt</span>
@@ -1278,21 +1349,23 @@ def render_onboarding_screen():
 
             name_val = st.text_input(
                 "What should we call you?",
+                value="Salman",
                 placeholder="e.g. Salman",
                 help="Your first name or nickname",
             )
 
-            phone_val = st.text_input(
-                "WhatsApp Phone Number",
-                placeholder="e.g. +1 (555) 019-2834 or +91 98765 43210",
-                help="Include your country code (+1, +91, etc.)",
+            chat_id_val = st.text_input(
+                "Telegram Chat ID or Phone Number",
+                value=st.session_state.get("telegram_chat_id", "9342298949"),
+                placeholder="e.g. 9342298949 or your numeric Chat ID",
+                help=f"Send /start to @{bot_user} on Telegram to enable auto-updates",
             )
 
             st.markdown(
-                textwrap.dedent("""
+                textwrap.dedent(f"""
                 <div class="phone-helper-note">
                     <span class="material-symbols-outlined" style="font-size:14px; margin-top:1px;">info</span>
-                    <span>Used solely to send your daily meal & macro summaries upon request.</span>
+                    <span>MacroSnap will auto-update @{bot_user} with every meal and daily summary you log.</span>
                 </div>
                 """).strip(),
                 unsafe_allow_html=True,
@@ -1302,18 +1375,25 @@ def render_onboarding_screen():
 
             if submitted:
                 clean_name = name_val.strip()
-                clean_phone = phone_val.strip()
+                clean_chat = chat_id_val.strip()
 
                 if not clean_name:
                     st.error("Please enter your name.")
-                elif not clean_phone:
-                    st.error("Please enter your WhatsApp phone number.")
-                elif len(re.sub(r"[^\d]", "", clean_phone)) < 7:
-                    st.error("Please enter a valid phone number with country code.")
+                elif not clean_chat:
+                    st.error("Please enter your Telegram Chat ID or phone number.")
                 else:
                     st.session_state["user_name"] = clean_name
-                    st.session_state["whatsapp_number"] = clean_phone
+                    st.session_state["telegram_chat_id"] = clean_chat
+                    st.session_state["whatsapp_number"] = clean_chat
                     st.session_state["onboarded"] = True
+
+                    # Dispatch a welcome ping to Telegram if chat ID exists
+                    send_telegram_message(
+                        clean_chat,
+                        f"🥗 *Welcome to MacroSnap, {clean_name}!* 🚀\n\n"
+                        f"Your AI Nutrition Buddy is now connected.\n"
+                        f"Every meal you log in the app will automatically update here in real-time!"
+                    )
 
                     welcome_msg = get_welcome_message(clean_name)
                     st.session_state.messages = [
@@ -1346,10 +1426,11 @@ def render_onboarding_screen():
 def render_chat_screen():
     """Renders the main conversation dashboard matching the Stitch designs."""
     user_name = st.session_state.get("user_name", "Salman")
-    whatsapp_num = st.session_state.get("whatsapp_number", "")
+    chat_id = st.session_state.get("telegram_chat_id", st.session_state.get("whatsapp_number", "9342298949"))
+    bot_username = get_telegram_bot_username()
 
     # Top Navbar
-    render_top_header(user_name, whatsapp_num)
+    render_top_header(user_name, chat_id)
 
     # Check if there is any analyzed meal data for the right sidebar (Web view)
     latest_nutrition_data = None
@@ -1373,7 +1454,7 @@ def render_chat_screen():
                     <div class="pulse-dot"></div>
                     <div>
                         <h3 class="chat-header-title">MacroSnap Nutrition Assistant</h3>
-                        <div class="chat-header-sub">Connected with {user_name}’s Food Cam & WhatsApp</div>
+                        <div class="chat-header-sub">Connected with {user_name}’s Food Cam & Telegram (@{bot_username})</div>
                     </div>
                 </div>
                 <div class="engine-chip">
@@ -1579,6 +1660,28 @@ def handle_submission(prompt: str, file_attachment):
         }
     )
 
+    # Real-Time Telegram Auto-Update Bot Dispatch
+    chat_id = st.session_state.get("telegram_chat_id", st.session_state.get("whatsapp_number", ""))
+    if chat_id and parsed_nutrition:
+        meal_name = parsed_nutrition.get("meal_name", prompt.title() if len(prompt) < 30 else "Analyzed Meal")
+        cals = parsed_nutrition.get("calories", 0)
+        p = parsed_nutrition.get("protein", 0)
+        c = parsed_nutrition.get("carbs", 0)
+        f = parsed_nutrition.get("fat", 0)
+        obs = parsed_nutrition.get("observation", "")
+
+        tg_update_text = (
+            f"🥗 *MacroSnap Live Meal Update*\n\n"
+            f"🍽 *Meal:* {meal_name}\n"
+            f"🔥 *Calories:* {cals} kcal\n"
+            f"💪 *Protein:* {p}g  |  🍞 *Carbs:* {c}g  |  🥑 *Fat:* {f}g\n"
+        )
+        if obs:
+            tg_update_text += f"\n💡 *Nutrient Insight:* {obs}\n"
+        tg_update_text += f"\n_Auto-synced live from MacroSnap at {timestamp_str}_"
+
+        send_telegram_message(chat_id, tg_update_text)
+
     st.rerun()
 
 
@@ -1589,13 +1692,19 @@ def main():
     if "onboarded" not in st.session_state:
         st.session_state["onboarded"] = False
     if "user_name" not in st.session_state:
-        st.session_state["user_name"] = ""
+        st.session_state["user_name"] = "Salman"
+    if "telegram_chat_id" not in st.session_state:
+        st.session_state["telegram_chat_id"] = "9342298949"
     if "whatsapp_number" not in st.session_state:
-        st.session_state["whatsapp_number"] = ""
+        st.session_state["whatsapp_number"] = "9342298949"
     if "messages" not in st.session_state:
         st.session_state["messages"] = []
+    if "telegram_status" not in st.session_state:
+        st.session_state["telegram_status"] = None
     if "whatsapp_status" not in st.session_state:
         st.session_state["whatsapp_status"] = None
+    if "is_sending_telegram" not in st.session_state:
+        st.session_state["is_sending_telegram"] = False
     if "is_sending_whatsapp" not in st.session_state:
         st.session_state["is_sending_whatsapp"] = False
 
