@@ -22,7 +22,10 @@ from dotenv import load_dotenv
 # Load local environment if present
 load_dotenv()
 
-# Import system prompts and helpers
+# Import system prompts and helpers with hot-reload resilience
+import importlib
+import prompts
+importlib.reload(prompts)
 from prompts import SYSTEM_PROMPT, get_welcome_message, get_telegram_summary_prompt, get_whatsapp_summary_prompt
 
 # -----------------------------------------------------------------------------
